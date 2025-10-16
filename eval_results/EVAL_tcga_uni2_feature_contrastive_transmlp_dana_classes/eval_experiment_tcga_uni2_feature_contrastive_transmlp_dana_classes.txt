@@ -1,0 +1,1 @@
+{'task': 'task_3_cell_type_classification', 'split': 'test', 'save_dir': './eval_results/EVAL_tcga_uni2_feature_contrastive_transmlp_dana_classes', 'models_dir': 'results/All_data_Dana_class_contrast_uni_2_feature_trans_classifer_no_feature_mlps_s1', 'model_type': 'rrt', 'drop_out': 0.25, 'model_size': 'big'}

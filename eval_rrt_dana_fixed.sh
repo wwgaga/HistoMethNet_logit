@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --time=12:00:00
+#SBATCH --nodes=1
+#SBATCH --gpus=a100:1
+#SBATCH --cpus-per-gpu=16
+#SBATCH --mem-per-gpu=20G
+
+
+# module load cuda/11.2
+
+# python main.py --drop_out 0.25 --early_stopping --lr 2e-4 --k 10 --exp_code task_dna_subtyping_RRT_Mixbag_Stem_like --weighted_sample --bag_loss ce --cell_property stem --inst_loss svm --task task_3_cell_type_classification --model_type rrt  --log_data --subtyping --data_root_dir /cbica/home/tianyu/dataset/Natalie_Cohort_UNI_Features --embed_dim 1024 --all_shortcut --crmsa_mlp --epeg_k=13 --crmsa_k=3 --crmsa_heads=1 --n_trans_layers=2 --da_act=tanh 
+
+python eval.py --k 10 --models_exp_code task_dna_subtyping_RRT_Mixbag_dana_suggest_fixed_s1 --splits_dir splits/task_3_cell_type_classification_100 --save_exp_code task_dna_subtyping_Dana_fixed --task task_3_cell_type_classification --model_type rrt --results_dir results --data_root_dir /cbica/home/tianyu/dataset/Natalie_Cohort_UNI_Features --embed_dim 1024

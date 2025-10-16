@@ -1,0 +1,114 @@
+import h5py
+import openslide
+import torch
+import pandas as pd
+import argparse
+import os
+
+from prototype_visualization_utils import visualize_categorical_heatmap, get_mixture_plot, get_default_cmap
+# from utils.eval_utils import initiate_model as initiate_model
+# from models import get_encoder
+import sys
+from prototype_visualization_utils import get_rrt_encoder
+sys.path.append('../')
+# from mil_models.tokenizer import PrototypeTokenizer
+
+print('\ninitializing model from checkpoint')
+ckpt_path = '/cbica/home/tianyu/projects/dna-rrt/results/task_dna_subtyping_RRT_Mixbag_dana_suggest_s1/s_7_checkpoint_best.pt'
+ckpt_path = '/cbica/home/tianyu/projects/dna-rrt-patch-only/results/All_data_Ken_class_contrast_uni_2_feature_trans_classifer_no_feature_mlps_s1/s_5_checkpoint_best_r.pt'
+print('\nckpt path: {}'.format(ckpt_path))
+device = 'cuda:0'
+feature_extractor = get_rrt_encoder(ckpt_path, device=device)
+
+print('Done!')
+
+# Read slide IDs from CSV
+csv_path = '../dataset_csv/dna_methylation_upenn_nih_new_jan.csv'  # Update this path as needed
+df = pd.read_csv(csv_path)
+slide_ids = df['slide_id'].tolist()
+
+cell_type_names = ['endothelial', 'GN', 'lymphoid_cells', 'MES_ATYP', 'MES_TYP', 'myeloid_cells', 'RTK_I', 'RTK_II']
+# cell_type_names = ['stem-like', 'Non-stem']
+#cell_type_names = ['stem-like',	'diff',	'immune', 'neuron', 'glia']
+num_cell_type = len(cell_type_names)
+for slide_id in slide_ids:
+    print(f"\nProcessing slide: {slide_id}")
+    
+    slide_fpath = f'/cbica/home/tianyu/dataset/penn_nih_combine_slides/{slide_id}.ndpi'
+    h5_feats_fpath = f'/cbica/home/tianyu/dataset/processed_features_nuclei/h5_files/{slide_id}.h5'
+    
+    if not os.path.exists(slide_fpath) or not os.path.exists(h5_feats_fpath):
+        print(f"Skipping {slide_id}: Files not found")
+        continue
+
+    wsi = openslide.open_slide(slide_fpath)
+    h5 = h5py.File(h5_feats_fpath, 'r')
+
+    coords = h5['coords'][:]
+    feats = torch.Tensor(h5['features'][:])
+    patch_size = 256
+
+    ### get PANTHER representation and GMM mixtures
+    with torch.inference_mode():
+        feats = feats.to(device)
+        # logits, instance_dict = feature_extractor(feats)
+        instance_dict = feature_extractor(feats)
+
+        cell_type_patch_level = instance_dict['cell_type_logits']
+        cell_type_prob = instance_dict['cell_type_prob']
+        
+        print("original cell_type_prob shape:", cell_type_prob.shape)
+        print("original cell_type_patch_level shape:", cell_type_patch_level.shape)
+        
+        # Use cell_type_patch_level for the confidence mask since it has the correct shape
+        cell_type_probs = torch.softmax(cell_type_patch_level, dim=-1)
+        max_probs, _ = torch.max(cell_type_probs, dim=-1)
+        
+        # Create mask for high confidence predictions (>0.85)
+        confidence_mask = max_probs > 0
+        
+        # Filter coordinates and labels based on confidence
+        filtered_coords = coords[confidence_mask.cpu().numpy()]
+        global_cluster_labels = cell_type_patch_level.argmax(dim=-1)
+        filtered_labels = global_cluster_labels[confidence_mask]
+
+        # Use the cell_type_probs for mixture calculation
+        filtered_cell_type_prob = cell_type_probs[confidence_mask]
+
+        print("Filtered shapes:")
+        print("filtered_coords shape:", filtered_coords.shape)
+        print("filtered_labels shape:", filtered_labels.shape)
+        print("filtered_cell_type_prob shape:", filtered_cell_type_prob.shape)
+
+        
+        # global_cluster_labels = cell_type_patch_level.argmax(axis=1)
+
+    
+    ### Visualize the categorical heatmap and the GMM mixtures
+    cat_map = visualize_categorical_heatmap(
+        wsi,
+        filtered_coords, 
+        filtered_labels, 
+        label2color_dict=get_default_cmap(num_cell_type),
+        vis_level=wsi.get_best_level_for_downsample(16), # original 128
+        patch_size=(patch_size, patch_size),
+        alpha=0.8,
+    )
+
+    # Get mixture plot and percentages
+    mus, percentages = get_mixture_plot(cell_type_prob.detach().cpu().numpy(), cell_type_names)
+    
+    # Save the produced figure
+    mus.savefig(f'Ken_new_ckpts_exclude_nucliei/precentage_maps/percentages_{slide_id}.jpg', format='JPEG')
+    
+    # Store the percentages in a CSV file
+    pd.DataFrame(percentages, columns=[f'{cell_type_names[i]}' for i in range(percentages.shape[1])]).to_csv(f'Ken_new_ckpts_exclude_nucliei/precentage_csv/cell_type_percentages_{slide_id}.csv', index=False)
+    
+    # Save the heatmap
+    cat_map.save(f'Ken_new_ckpts_exclude_nucliei/categorical_maps/cell_type_heatmap_{slide_id}.jpg', 'JPEG')
+
+    # Close open files
+    h5.close()
+    wsi.close()
+
+print("Processing complete!")
