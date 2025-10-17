@@ -1,0 +1,10 @@
+✓ All critical imports successful
+PyTorch version: 2.6.0+cu118
+CUDA available: False
+Number of CPU threads: 16
+Running in CPU‑only mode
+2119fmn007
+Model name:            Intel(R) Xeon(R) Gold 6130 CPU @ 2.10GHz
+16
+377G
+Python 3.10.13

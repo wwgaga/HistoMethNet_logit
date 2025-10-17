@@ -5,8 +5,8 @@
 #SBATCH --ntasks=1
 #SBATCH --job-name=rrt_logit_ken_8type_cpu
 #SBATCH --time=26:00:00
-#SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=4G 
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=128G 
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
 #SBATCH --mail-type=END,FAIL
@@ -22,10 +22,10 @@ source /cbica/software/external/python/anaconda/3/etc/profile.d/conda.sh
 conda activate uni2_env
 
 # Pin threading to the CPUs you requested
-export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-64}
-export MKL_NUM_THREADS=${SLURM_CPUS_PER_TASK:-64}
-export OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK:-64}
-export NUMEXPR_NUM_THREADS=${SLURM_CPUS_PER_TASK:-64}
+export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-32}
+export MKL_NUM_THREADS=${SLURM_CPUS_PER_TASK:-32}
+export OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK:-32}
+export NUMEXPR_NUM_THREADS=${SLURM_CPUS_PER_TASK:-32}
 
 # Force CPU usage
 export CUDA_VISIBLE_DEVICES=""

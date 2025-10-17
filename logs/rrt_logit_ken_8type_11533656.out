@@ -1,0 +1,491 @@
+Installing all required dependencies...
+Testing imports...
+✓ All critical imports successful
+PyTorch version: 2.6.0+cu118
+CUDA available: True
+GPU: NVIDIA L40
+HOST: 211affn002
+CUDA: Build cuda_11.8.r11.8/compiler.31833905_0
+Thu Oct 16 16:38:03 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.183.01             Driver Version: 535.183.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA L40                     On  | 00000000:58:00.0 Off |                    0 |
+| N/A   24C    P8              35W / 300W |      0MiB / 46068MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+Python 3.10.13
+==========================================
+Starting RRT + Logistic Regression Ken 8-type classification
+Using 30% of dataset with embed_dim=1536
+Model type: rrt_logit
+==========================================
+
+Load Dataset
+label column: label
+label dictionary: {'RTK1': 0, 'RTK2': 1, 'mesenchymal': 2}
+number of classes: 3
+slide-level counts:  
+ label
+2    294
+1    280
+0    108
+Name: count, dtype: int64
+Patient-LVL; Number of samples registered in class 0: 94
+Slide-LVL; Number of samples registered in class 0: 108
+Patient-LVL; Number of samples registered in class 1: 234
+Slide-LVL; Number of samples registered in class 1: 280
+Patient-LVL; Number of samples registered in class 2: 268
+Slide-LVL; Number of samples registered in class 2: 294
+split_dir:  /cbica/home/tianyu/projects/dna-rrt-patch-only/splits/task_3_cell_type_classification_100
+################# Settings ###################
+num_splits:  10
+k_start:  7
+k_end:  -1
+task:  task_3_cell_type_classification
+max_epochs:  50
+results_dir:  /gpfs/fs001/cbica/home/wurig/projects/HistoMethNet_logit/results
+lr:  0.0002
+experiment:  task_dna_subtyping_RRT_LOGIT_NIH_and_Penn_Ken_8type_30pct
+reg:  1e-05
+label_frac:  0.3
+bag_loss:  ce
+seed:  1
+model_type:  rrt_logit
+model_size:  big
+use_drop_out:  0.25
+weighted_sample:  True
+opt:  adam
+split_dir:  /cbica/home/tianyu/projects/dna-rrt-patch-only/splits/task_3_cell_type_classification_100
+
+Training Fold 7!
+
+Init train/val/test splits... 
+Done!
+Training on 549 samples
+Validating on 70 samples
+Testing on 70 samples
+
+Init loss function... Done!
+
+Init Model... Done!
+rrt is ready
+
+Init optimizer ... Done!
+
+Init Loaders... Done!
+
+Setup EarlyStopping... 
+
+Epoch: 0, train_loss: 4.7659, train_conf_interval_loss: 1.4770, train_consistency_loss: 0.0209,  train_error: 0.0000
+MAE for cell types propotions: 0.08614644408226013
+Overall Pearson's r across all cell types and samples: 0.7144
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.7144, MAE Score: 0.0861
+Validation loss decreased (inf --> 0.000000).  Saving model ...
+
+
+Epoch: 1, train_loss: 4.5220, train_conf_interval_loss: 1.2978, train_consistency_loss: 0.0001,  train_error: 0.0000
+MAE for cell types propotions: 0.08266191184520721
+Overall Pearson's r across all cell types and samples: 0.7310
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.7310, MAE Score: 0.0827
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 2, train_loss: 4.6377, train_conf_interval_loss: 1.2724, train_consistency_loss: 0.0002,  train_error: 0.0000
+MAE for cell types propotions: 0.07607288658618927
+Overall Pearson's r across all cell types and samples: 0.7945
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.7945, MAE Score: 0.0761
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 3, train_loss: 4.6882, train_conf_interval_loss: 1.2415, train_consistency_loss: 0.0003,  train_error: 0.0000
+MAE for cell types propotions: 0.07587907463312149
+Overall Pearson's r across all cell types and samples: 0.7933
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.7933, MAE Score: 0.0759
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 4, train_loss: 4.6364, train_conf_interval_loss: 1.2110, train_consistency_loss: 0.0004,  train_error: 0.0000
+MAE for cell types propotions: 0.07255059480667114
+Overall Pearson's r across all cell types and samples: 0.8220
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8220, MAE Score: 0.0726
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 5, train_loss: 4.6170, train_conf_interval_loss: 1.1687, train_consistency_loss: 0.0005,  train_error: 0.0000
+MAE for cell types propotions: 0.071999192237854
+Overall Pearson's r across all cell types and samples: 0.8215
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8215, MAE Score: 0.0720
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 6, train_loss: 4.6137, train_conf_interval_loss: 1.1687, train_consistency_loss: 0.0005,  train_error: 0.0000
+MAE for cell types propotions: 0.07569287717342377
+Overall Pearson's r across all cell types and samples: 0.8059
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8059, MAE Score: 0.0757
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 7, train_loss: 4.6224, train_conf_interval_loss: 1.1819, train_consistency_loss: 0.0005,  train_error: 0.0000
+MAE for cell types propotions: 0.07205547392368317
+Overall Pearson's r across all cell types and samples: 0.8095
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8095, MAE Score: 0.0721
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 8, train_loss: 4.5871, train_conf_interval_loss: 1.1310, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.0717715322971344
+Overall Pearson's r across all cell types and samples: 0.8149
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8149, MAE Score: 0.0718
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 9, train_loss: 4.5977, train_conf_interval_loss: 1.1447, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07432779669761658
+Overall Pearson's r across all cell types and samples: 0.7958
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.7958, MAE Score: 0.0743
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 10, train_loss: 4.5985, train_conf_interval_loss: 1.1484, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07534509897232056
+Overall Pearson's r across all cell types and samples: 0.7934
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.7934, MAE Score: 0.0753
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 11, train_loss: 4.6081, train_conf_interval_loss: 1.1521, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07456448674201965
+Overall Pearson's r across all cell types and samples: 0.7743
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.7743, MAE Score: 0.0746
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 12, train_loss: 4.5856, train_conf_interval_loss: 1.1256, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06935139000415802
+Overall Pearson's r across all cell types and samples: 0.8377
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8377, MAE Score: 0.0694
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 13, train_loss: 4.6071, train_conf_interval_loss: 1.1536, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06971844285726547
+Overall Pearson's r across all cell types and samples: 0.8237
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8237, MAE Score: 0.0697
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 14, train_loss: 4.5492, train_conf_interval_loss: 1.0888, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.06770838797092438
+Overall Pearson's r across all cell types and samples: 0.8392
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8392, MAE Score: 0.0677
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 15, train_loss: 4.5446, train_conf_interval_loss: 1.1000, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.0717553123831749
+Overall Pearson's r across all cell types and samples: 0.8140
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8140, MAE Score: 0.0718
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 16, train_loss: 4.5545, train_conf_interval_loss: 1.0967, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06779054552316666
+Overall Pearson's r across all cell types and samples: 0.8320
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8320, MAE Score: 0.0678
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 17, train_loss: 4.5483, train_conf_interval_loss: 1.0972, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.06903956085443497
+Overall Pearson's r across all cell types and samples: 0.8353
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8353, MAE Score: 0.0690
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 18, train_loss: 4.6005, train_conf_interval_loss: 1.1469, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.07465522736310959
+Overall Pearson's r across all cell types and samples: 0.8058
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8058, MAE Score: 0.0747
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 19, train_loss: 4.5752, train_conf_interval_loss: 1.1101, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06910579651594162
+Overall Pearson's r across all cell types and samples: 0.8340
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8340, MAE Score: 0.0691
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 20, train_loss: 4.5524, train_conf_interval_loss: 1.1032, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.07270307838916779
+Overall Pearson's r across all cell types and samples: 0.8051
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8051, MAE Score: 0.0727
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 21, train_loss: 4.5272, train_conf_interval_loss: 1.0758, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.06822425127029419
+Overall Pearson's r across all cell types and samples: 0.8312
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8312, MAE Score: 0.0682
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 22, train_loss: 4.5358, train_conf_interval_loss: 1.0737, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.0673585757613182
+Overall Pearson's r across all cell types and samples: 0.8394
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8394, MAE Score: 0.0674
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 23, train_loss: 4.5540, train_conf_interval_loss: 1.1073, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.06836036592721939
+Overall Pearson's r across all cell types and samples: 0.8332
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8332, MAE Score: 0.0684
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 24, train_loss: 4.5649, train_conf_interval_loss: 1.0884, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.07103067636489868
+Overall Pearson's r across all cell types and samples: 0.8273
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8273, MAE Score: 0.0710
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 25, train_loss: 4.5486, train_conf_interval_loss: 1.0965, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.07033438980579376
+Overall Pearson's r across all cell types and samples: 0.8137
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8137, MAE Score: 0.0703
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 26, train_loss: 4.5610, train_conf_interval_loss: 1.1021, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.07335641235113144
+Overall Pearson's r across all cell types and samples: 0.8074
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8074, MAE Score: 0.0734
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 27, train_loss: 4.5185, train_conf_interval_loss: 1.0711, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.07315463572740555
+Overall Pearson's r across all cell types and samples: 0.8188
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8188, MAE Score: 0.0732
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 28, train_loss: 4.5213, train_conf_interval_loss: 1.0672, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.07186730206012726
+Overall Pearson's r across all cell types and samples: 0.8247
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8247, MAE Score: 0.0719
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 29, train_loss: 4.5464, train_conf_interval_loss: 1.0866, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07163998484611511
+Overall Pearson's r across all cell types and samples: 0.8299
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8299, MAE Score: 0.0716
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 30, train_loss: 4.5496, train_conf_interval_loss: 1.0897, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07512533664703369
+Overall Pearson's r across all cell types and samples: 0.8104
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8104, MAE Score: 0.0751
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 31, train_loss: 4.5398, train_conf_interval_loss: 1.0884, train_consistency_loss: 0.0007,  train_error: 0.0000
+MAE for cell types propotions: 0.06960892677307129
+Overall Pearson's r across all cell types and samples: 0.8334
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8334, MAE Score: 0.0696
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 32, train_loss: 4.5429, train_conf_interval_loss: 1.0784, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07166068255901337
+Overall Pearson's r across all cell types and samples: 0.8172
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8172, MAE Score: 0.0717
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 33, train_loss: 4.5156, train_conf_interval_loss: 1.0491, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07015925645828247
+Overall Pearson's r across all cell types and samples: 0.8287
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8287, MAE Score: 0.0702
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 34, train_loss: 4.4959, train_conf_interval_loss: 1.0458, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07504475116729736
+Overall Pearson's r across all cell types and samples: 0.8094
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8094, MAE Score: 0.0750
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 35, train_loss: 4.5246, train_conf_interval_loss: 1.0691, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07247733324766159
+Overall Pearson's r across all cell types and samples: 0.8253
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8253, MAE Score: 0.0725
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 36, train_loss: 4.5241, train_conf_interval_loss: 1.0730, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07008445262908936
+Overall Pearson's r across all cell types and samples: 0.8356
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8356, MAE Score: 0.0701
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 37, train_loss: 4.5306, train_conf_interval_loss: 1.0643, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.0696462020277977
+Overall Pearson's r across all cell types and samples: 0.8365
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8365, MAE Score: 0.0696
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 38, train_loss: 4.5281, train_conf_interval_loss: 1.0846, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06806445121765137
+Overall Pearson's r across all cell types and samples: 0.8454
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8454, MAE Score: 0.0681
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 39, train_loss: 4.4882, train_conf_interval_loss: 1.0223, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07308405637741089
+Overall Pearson's r across all cell types and samples: 0.8198
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8198, MAE Score: 0.0731
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 40, train_loss: 4.4966, train_conf_interval_loss: 1.0431, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06765684485435486
+Overall Pearson's r across all cell types and samples: 0.8394
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8394, MAE Score: 0.0677
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 41, train_loss: 4.5547, train_conf_interval_loss: 1.0912, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06958019733428955
+Overall Pearson's r across all cell types and samples: 0.8361
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8361, MAE Score: 0.0696
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 42, train_loss: 4.5254, train_conf_interval_loss: 1.0595, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.0700889602303505
+Overall Pearson's r across all cell types and samples: 0.8259
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8259, MAE Score: 0.0701
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 43, train_loss: 4.4944, train_conf_interval_loss: 1.0365, train_consistency_loss: 0.0005,  train_error: 0.0000
+MAE for cell types propotions: 0.06961799412965775
+Overall Pearson's r across all cell types and samples: 0.8342
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8342, MAE Score: 0.0696
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 44, train_loss: 4.5368, train_conf_interval_loss: 1.0738, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07096830755472183
+Overall Pearson's r across all cell types and samples: 0.8279
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8279, MAE Score: 0.0710
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 45, train_loss: 4.5102, train_conf_interval_loss: 1.0588, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07226023077964783
+Overall Pearson's r across all cell types and samples: 0.8043
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8043, MAE Score: 0.0723
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 46, train_loss: 4.5258, train_conf_interval_loss: 1.0677, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07131829112768173
+Overall Pearson's r across all cell types and samples: 0.8300
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8300, MAE Score: 0.0713
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 47, train_loss: 4.5136, train_conf_interval_loss: 1.0560, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07075194269418716
+Overall Pearson's r across all cell types and samples: 0.8316
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8316, MAE Score: 0.0708
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 48, train_loss: 4.4990, train_conf_interval_loss: 1.0407, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.06955907493829727
+Overall Pearson's r across all cell types and samples: 0.8305
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8305, MAE Score: 0.0696
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+
+
+Epoch: 49, train_loss: 4.5330, train_conf_interval_loss: 1.0742, train_consistency_loss: 0.0006,  train_error: 0.0000
+MAE for cell types propotions: 0.07068584859371185
+Overall Pearson's r across all cell types and samples: 0.8279
+
+Val Set, val_loss: 0.0000, val_error: 0.0000, pearson r: 0.8279, MAE Score: 0.0707
+Validation loss decreased (0.000000 --> 0.000000).  Saving model ...
+Val error: 0.0000, Pearson r score cell_type: 0.8454, MAE score cell type: 0.0681
+Test error: 0.0000, Pearson r score cell_type: 0.8454, MAE score cell type: 0.0681
