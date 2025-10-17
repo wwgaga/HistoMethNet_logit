@@ -64,7 +64,7 @@ def ci_loss_interval(
 
 
 def get_simple_loader(dataset, batch_size=1, num_workers=1):
-	kwargs = {'num_workers': 4, 'pin_memory': False, 'num_workers': num_workers} if device.type == "cuda" else {}
+	kwargs = {'num_workers': 4, 'pin_memory': False, 'num_workers': num_workers} if device.type == "cuda" else {'num_workers': num_workers}
 	loader = DataLoader(dataset, batch_size=batch_size, sampler = sampler.SequentialSampler(dataset), collate_fn = collate_MIL, **kwargs)
 	return loader 
 
@@ -94,9 +94,12 @@ def collate_MIL_cell_type(batch):
 	
 def get_split_loader(split_dataset, training = False, testing = False, weighted = False):
 	"""
-		return either the validation loader or training loader 
+		return either the validation loader or training loader
 	"""
-	kwargs = {'num_workers': 4} if device.type == "cuda" else {}
+	# Enable multi-worker data loading for both CPU and GPU
+	# persistent_workers keeps workers alive between epochs for faster data loading
+	# prefetch_factor loads more batches in advance to reduce I/O waiting time
+	kwargs = {'num_workers': 8, 'persistent_workers': True, 'prefetch_factor': 4} if device.type == "cuda" else {'num_workers': 8, 'persistent_workers': True, 'prefetch_factor': 4}
 	if not testing:
 		if training:
 			if weighted:

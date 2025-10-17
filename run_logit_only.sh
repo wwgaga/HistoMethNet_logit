@@ -31,8 +31,13 @@ export NUMEXPR_NUM_THREADS=${SLURM_CPUS_PER_TASK:-16}
 export CUDA_VISIBLE_DEVICES=""
 export WANDB_MODE=offline
 
-# (Optional) Improve CPU binding on some clusters
+# CPU optimizations for faster inference
 export KMP_AFFINITY=granularity=fine,compact,1,0 || true
+export KMP_BLOCKTIME=1
+export KMP_SETTINGS=1
+
+# PyTorch CPU optimizations
+export PYTORCH_ENABLE_MPS_FALLBACK=1
 
 # Install dependencies
 pip install --quiet \
