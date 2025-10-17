@@ -9,6 +9,7 @@ import pdb
 import os
 from scipy.stats import pearsonr
 from models.rrt import RRTMIL
+from models.logit_only import LogitOnly
 
 import pandas as pd
 import argparse
@@ -107,10 +108,22 @@ def get_rrt_encoder(ckpt_path, args, device='cuda'):
     model.to(device)
     return model
 
+def get_logit_only(ckpt_path, args, device='cuda'):
+    """Load a LogitOnly model (no encoder), then load checkpoint weights."""
+    model = LogitOnly(input_dim=args.embed_dim, n_classes=None, dropout=args.drop_out, cell_property=args.cell_property)
+    state_dict = torch.load(ckpt_path, map_location=device, weights_only=True)
+    model.load_state_dict(state_dict, strict=True)
+    model.eval()
+    model.to(device)
+    return model
+
 
 def eval(dataset, args, ckpt_path, device):
-    # model = initiate_model(args, ckpt_path)
-    model = get_rrt_encoder(ckpt_path, args, device=device)
+    # Build model per type and load weights
+    if args.model_type == 'logit_only':
+        model = get_logit_only(ckpt_path, args, device=device)
+    else:
+        model = get_rrt_encoder(ckpt_path, args, device=device)
     print('Init Loaders')
     # loader = get_simple_loader(dataset)
     print('num of testing samples:')

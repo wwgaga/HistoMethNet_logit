@@ -130,7 +130,7 @@ parser.add_argument('--opt', type=str, choices = ['adam', 'sgd'], default='adam'
 parser.add_argument('--drop_out', type=float, default=0.25, help='dropout')
 parser.add_argument('--bag_loss', type=str, choices=['svm', 'ce'], default='ce',
                      help='slide-level classification loss function (default: ce)')
-parser.add_argument('--model_type', type=str, choices=['clam_sb', 'clam_mb', 'mil', 'clam_mt', 'rrt', 'rrt_logit'], default='clam_sb', 
+parser.add_argument('--model_type', type=str, choices=['clam_sb', 'clam_mb', 'mil', 'clam_mt', 'rrt', 'rrt_logit', 'logit_only'], default='clam_sb', 
                     help='type of model (default: clam_sb, clam w/ single attention branch)')
 parser.add_argument('--exp_code', type=str, help='experiment code for saving results')
 parser.add_argument('--weighted_sample', action='store_true', default=False, help='enable weighted sampling')
@@ -260,7 +260,7 @@ elif args.task == 'task_2_tumor_subtyping':
                             patient_strat= False,
                             ignore=[])
 
-    if args.model_type in ['clam_sb', 'clam_mb', 'clam_mt', 'rrt', 'rrt_logit']:
+    if args.model_type in ['clam_sb', 'clam_mb', 'clam_mt', 'rrt', 'rrt_logit', 'logit_only']:
         assert args.subtyping 
 
 elif args.task == 'task_3_cell_type_classification':
@@ -275,7 +275,7 @@ elif args.task == 'task_3_cell_type_classification':
                             patient_strat= False,
                             ignore=[])
 
-    if args.model_type in ['clam_sb', 'clam_mb', 'clam_mt', 'rrt', 'rrt_logit']:
+    if args.model_type in ['clam_sb', 'clam_mb', 'clam_mt', 'rrt', 'rrt_logit', 'logit_only']:
         assert args.subtyping 
 else:
     raise NotImplementedError
@@ -311,5 +311,4 @@ if __name__ == "__main__":
     results = main(args)
     print("finished!")
     print("end script")
-
 

@@ -12,6 +12,7 @@ from torchmetrics.regression import R2Score
 from sklearn.metrics import r2_score
 from models.rrt import RRTMIL
 from models.rrt_logit import RRTMILLogit
+from models.logit_only import LogitOnly
 from utils.losses import (
     ConfidentialIntervalLoss,
     PiModelLoss,
@@ -143,7 +144,7 @@ def train(datasets, cur, args):
     print('Done!')
     
     print('\nInit Model...', end=' ')
-    if args.model_type in ['rrt', 'rrt_logit']:
+    if args.model_type in ['rrt', 'rrt_logit', 'logit_only']:
         model_dict = {
             'input_dim': args.embed_dim,
             'n_classes': args.n_classes,
@@ -184,7 +185,7 @@ def train(datasets, cur, args):
                     'n_classes': args.n_classes, 
                     "embed_dim": args.embed_dim}
     
-    if args.model_size is not None and args.model_type not in ['mil', 'rrt', 'rrt_logit']:
+    if args.model_size is not None and args.model_type not in ['mil', 'rrt', 'rrt_logit', 'logit_only']:
         model_dict.update({"size_arg": args.model_size})
     
     if args.model_type in ['clam_sb', 'clam_mb', 'clam_mt']:
@@ -227,6 +228,13 @@ def train(datasets, cur, args):
         prop_criterion = VATLoss(xi=10.0, eps=1.0, ip=1)
         conf_interval_criterion = ConfidentialIntervalLoss()
         supcon_criterion = SupConLoss(temperature=0.07)
+    elif args.model_type == 'logit_only':
+        # Direct multinomial logistic regression over patch features
+        model = LogitOnly(input_dim=args.embed_dim, n_classes=None, dropout=args.drop_out, cell_property=args.cell_property)
+        instance_loss_fn = nn.CrossEntropyLoss().to(device)
+        prop_criterion = VATLoss(xi=10.0, eps=1.0, ip=1)
+        conf_interval_criterion = ConfidentialIntervalLoss()
+        supcon_criterion = SupConLoss(temperature=0.07)
 
     else: # args.model_type == 'mil'
         if args.n_classes > 2:
@@ -240,7 +248,7 @@ def train(datasets, cur, args):
         conf_interval_criterion = ConfidentialIntervalLoss_CLAM()
     print('Done!')
     
-    if args.model_type in ['rrt', 'rrt_logit']:
+    if args.model_type in ['rrt', 'rrt_logit', 'logit_only']:
         print('rrt is ready')
     else:
         print_network(model)
@@ -268,7 +276,7 @@ def train(datasets, cur, args):
             train_loop_clam(epoch, model, train_loader, optimizer, args.n_classes, args.bag_weight, writer, loss_fn, prop_criterion, conf_interval_criterion)
             stop = validate_clam(cur, epoch, model, val_loader, args.n_classes, 
                 early_stopping, writer, loss_fn, args.results_dir)
-        elif args.model_type in ['rrt', 'rrt_logit']:
+        elif args.model_type in ['rrt', 'rrt_logit', 'logit_only']:
             
             train_loop_rrt(epoch, model, train_loader, optimizer, args.n_classes, \
                            args.bag_weight, writer, loss_fn, prop_criterion, \
@@ -282,7 +290,7 @@ def train(datasets, cur, args):
             stop = validate(cur, epoch, model, val_loader, args.n_classes, 
                 early_stopping, writer, loss_fn, args.results_dir)
         
-        if args.model_type in ['rrt', 'rrt_logit']:
+        if args.model_type in ['rrt', 'rrt_logit', 'logit_only']:
             _, val_error, _, _, val_r_value= summary_rrt(model, val_loader, args.n_classes, cell_property=args.cell_property)
         else:
             _, val_error, val_auc, _, _, _= summary(model, val_loader, args.n_classes)
@@ -305,14 +313,14 @@ def train(datasets, cur, args):
         torch.save(model.state_dict(), os.path.join(args.results_dir, "s_{}_checkpoint_best_r.pt".format(cur)))
 
     # _, val_error, val_auc, _, mean_r2_score_stem, mean_r2_score_immune, mean_r2_score_cell_type = summary(model, val_loader, args.n_classes)
-    if args.model_type in ['rrt', 'rrt_logit']:
+    if args.model_type in ['rrt', 'rrt_logit', 'logit_only']:
         _, val_error, _, mae_value, r_value = summary_rrt(model, val_loader, args.n_classes, cell_property=args.cell_property)
     else:
         _, val_error, val_auc, _, mae_value, r_value = summary(model, val_loader, args.n_classes)
 
     print('Val error: {:.4f}, Pearson r score cell_type: {:.4f}, MAE score cell type: {:.4f}'.format(val_error, r_value, mae_value))
 
-    if args.model_type in ['rrt', 'rrt_logit']:
+    if args.model_type in ['rrt', 'rrt_logit', 'logit_only']:
         results_dict, test_error, acc_logger, mae_value, r_value = summary_rrt(model, test_loader, args.n_classes, cell_property=args.cell_property)
     else:
         results_dict, test_error, test_auc, acc_logger, mae_value, r_value = summary(model, test_loader, args.n_classes)
